@@ -17,7 +17,7 @@ And the Arduino has 4 analog pin to handle the servos
  .Always enable EDAN bit for ADC conversion
  . Bit 6 – ADSC: ADC Start Conversion always write this bit to 1 in each conversion to start it
 */
-#include <Arduino.h>
+#include <avr/interrupt.h>
 #include <avr/io.h>
 //------------Define Servo pins---------------//
 #define SERVO1 1
@@ -39,6 +39,10 @@ void ADC_Config() {
   ADCSRA |= (1 << ADEN); // Enable the ADC
 }
 
+void startConversion() {
+  ADCSRA |=  (1<<ADSC);
+}
+
 //---------Define Function for the Servo----------//
 void Arm_Config() {
   DDRB |= ((1 << SERVO1) | (1 << SERVO2) | (1 << SERVO3) | (1 << SERVO4));
@@ -47,6 +51,7 @@ void Arm_Config() {
 void PCINT_Enable() { // This function to receive input from analog pins
   // Enable pin change interupt regiter 0 bc it suitable fro PC[0:7]
   PCICR |= (1 << PCIE0);
+  sei();
 }
 
 //--------------Logical Functions ----------------------//
@@ -89,7 +94,7 @@ int main(void) {
 
 ISR(PCINT0_vect) { // Interupt when receive signal from analogpin
   for(int i = 0; i <= 5;i++) {
-    if(PINC & (1 << i)) {
+    if(PINC & (1 << i)) { // For each pin in PINC, check if which pin is enabled and choose them
       analFlag++;
       checkAnalogPin(analFlag);
     }
