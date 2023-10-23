@@ -21,6 +21,7 @@ And the Arduino has 4 analog pin to handle the servos
  . Always select pin channel before starting conversion
  . Vref is the maximum voltage that ADC can convert. For Example arduno is 5V, so we need to enable REFS0 bit
  . For AVR 8 bit we need to set the adc prescaler to 8 ADPS[2:0] = 011
+ . Because whe choose A1,A2,A3 so the AMUX to these must plus one
  -------------------------Note-------------------------------
  . Map function is used to convert ref to another ref. Ex: 1023 -> 5V
 */
@@ -37,4 +38,5 @@ void Analog_Init();
 void ADC_Config();
 void ADC_Disable();
 void startConversion();
+void ADMUX_Reset();
 #endif
