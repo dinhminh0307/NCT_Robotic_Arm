@@ -25,18 +25,22 @@ And the Arduino has 4 analog pin to handle the servos
  -------------------------Note-------------------------------
  . Map function is used to convert ref to another ref. Ex: 1023 -> 5V
 */
-#include <avr/interrupt.h>
-#include <avr/io.h>
+// #include <avr/interrupt.h>
+// #include <avr/io.h>
+#include <Arduino.h>
 //------------Define AnalogPin---------------//
 #define Ana1 1
 #define Ana2 2
 #define Ana3 3
 #define Ana4 4
 
+static float final_result[3] = {0,0,0};
 void REFS0_Config();
 void Analog_Init();
 void ADC_Config();
 void ADC_Disable();
 void startConversion();
 void ADMUX_Reset();
+void set_result_wave();
+void clear_result_wave();
 #endif

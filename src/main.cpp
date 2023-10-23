@@ -28,11 +28,6 @@ And the Arduino has 4 analog pin to handle the servos
 #define SERVO2 2
 #define SERVO3 3
 #define SERVO4 4
-//------------Define AnalogPin---------------//
-#define Ana1 1
-#define Ana2 2
-#define Ana3 3
-#define Ana4 4
 
 
 //---------Define Function for the Servo----------//
@@ -82,27 +77,30 @@ int main(void) {
   ADC_Config();
   Analog_Init();
   REFS0_Config();
-  
+  Serial.begin(9600);
   DDRB |= (1 << 5);
   while(1) {
-    // Just for testing
-    // if(testVar) {
-    //   PORTB |= (1 << 5);
+    startConversion();
+    // set_result_wave();
+    // for(int i = 0; i < 3; i++) {
+    //   Serial.println(final_result[i]);
     // }
+    // delayMicroseconds(1000);
+    // clear_result_wave();
   }
 }
 
-ISR(PCINT0_vect) { // Interupt when receive signal from analogpin
-  // for(int i = 0; i <= 5;i++) {
-  //   if(PINC & (1 << i)) { // For each pin in PINC, check if which pin is enabled and choose them
-  //     analFlag++;
-  //     checkAnalogPin(analFlag);
-  //   }
-  //   else {
-  //     continue;
-  //   }
-  // }
-  // analFlag = 0;
-  PORTB |= (1 << 5);
-}
+// ISR(PCINT0_vect) { // Interupt when receive signal from analogpin
+//   // for(int i = 0; i <= 5;i++) {
+//   //   if(PINC & (1 << i)) { // For each pin in PINC, check if which pin is enabled and choose them
+//   //     analFlag++;
+//   //     checkAnalogPin(analFlag);
+//   //   }
+//   //   else {
+//   //     continue;
+//   //   }
+//   // }
+//   // analFlag = 0;
+//   PORTB |= (1 << 5);
+// }
 
