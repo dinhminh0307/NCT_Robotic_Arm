@@ -22,8 +22,7 @@ And the Arduino has 4 analog pin to handle the servos
  -------------------------Note-------------------------------
  . Map function is used to convert ref to another ref. Ex: 1023 -> 5V
 */
-#include <avr/interrupt.h>
-#include <avr/io.h>
+#include <AnaLogPin.h>
 //------------Define Servo pins---------------//
 #define SERVO1 1
 #define SERVO2 2
@@ -35,41 +34,6 @@ And the Arduino has 4 analog pin to handle the servos
 #define Ana3 3
 #define Ana4 4
 
-int analFlag = 0;
-bool testVar = false;
-const int numberOfChanel = 4;
-int counter = 0;
-int n = 50;
-float sum = 0;
-//---------Define Functions for the Analog---------//
-void REFS0_Config() {
-  ADMUX &= ~((1 << REFS1) | (1 << REFS0)); // Specify Vref
-  ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0));
-}
-void Analog_Init() {
-  DDRC &= ~((1 << Ana1) | (1 << Ana2) | (1 << Ana3) | (1 << Ana4)); // Set as input
-}
-void ADC_Config() {
-  ADCSRA |= (1 << ADEN); // Enable the ADC
-}
-
-void ADC_Disable() {
-  ADCSRA &= ~(1 << ADEN); // Disable the ADC
-}
-
-void startConversion() {
-  ADCSRA |=  (1<<ADSC);
-  while(counter < 4) { // Start conversion for each pin
-    for(int k = 0; k < n; k++) {
-      while (ADCSRA & (1 <<ADSC)) { // Check if the conversion is already in progress
-        
-      }
-    }
-    ADMUX += 1; // go incrementally from 1 to 4
-    counter++;
-  }
-  
-}
 
 //---------Define Function for the Servo----------//
 void Arm_Config() {
