@@ -1,22 +1,19 @@
-// #include <Arduino.h>
+void setup() {
+  Serial.begin(9600); 
+}  
 
-// double val = 0;
-// double V2 = 0;
-// void setup() {
-//     pinMode(A1, INPUT);
-//     pinMode(13, OUTPUT);
-//     Serial.begin(9600);
-// }
-
-// void loop() {
-//     val = digitalRead(A1);
-//     V2 = (5./1023.) * val;
-//     // if(val> 0) {
-//     //     digitalWrite(13, HIGH);
-//     // }
-//     // else {
-//     //   digitalWrite(13, LOW);
-//     // }
-//     Serial.println(V2);
-//     delay(1000);
-// }
+void loop() {  
+  //REFS1 AND REFS0 to 1 1 -> internal 1.1V refference
+  //ADMUX |= B00000010;   
+  //We read A1 (MUX0)
+  ADMUX |= B00000000;      
+ 
+  // Start AD conversion
+  ADCSRA |= B11000000;
+  // Detect end-of-conversion
+  while (bit_is_set(ADCSRA,ADSC));
+  int val = ADCL | (ADCH << 8);
+  float voltage = val * (5 / 1023.0);
+  // print out the value you read:
+  Serial.println(voltage);
+}

@@ -80,14 +80,8 @@ int main(void) {
   Serial.begin(9600);
   DDRB |= (1 << 5);
   while(1) {
-    startConversion();
     Serial.println(startConversion());
-    // set_result_wave();
-    // for(int i = 0; i < 3; i++) {
-    //   Serial.println(final_result[i]);
-    // }
-    // delayMicroseconds(1000);
-    // clear_result_wave();
+    // delay(500);
   }
 }
 
