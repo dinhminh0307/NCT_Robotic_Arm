@@ -8,7 +8,8 @@ const float ADC_2V = 5 * 1/1023.0;
 int counter = 0;
 volatile float ADC_Pins[3] = {0,0,0}; // store the voltage value from pins
 int n = 50; // samples
-float sum = 0;
+volatile float sum = 0;
+volatile int result = 0;
 float t = 0;
 
 //---------Define Functions for the Analog---------//
@@ -34,7 +35,7 @@ void ADMUX_Reset() { // Reset when finish the conversion for 3 pins
   ADMUX &= ~((1 << REFS1) | (1 << REFS0)); // Specify Vref
   ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0)); // choose pin A0 as the analog pin
 }
-void startConversion() {
+float startConversion() {
   while(counter < numberOfChanel) { // Start conversion for each pin
     for(int k = 0; k < n; k++) {
       ADCSRA |=  (1<<ADSC);
@@ -48,6 +49,13 @@ void startConversion() {
     counter++;
     sum = 0;
   }
+  ADMUX_Reset();
+  // ADCSRA |=  (1<<ADSC);
+  // while (ADCSRA & (1 <<ADSC)); // Wait for the conversion to complete
+  // result =ADCL;
+  // result |= (ADCH << 8);
+  // sum = (float) result * ADC_2V;
+  // return sum;
 }
 
 void set_result_wave() {
