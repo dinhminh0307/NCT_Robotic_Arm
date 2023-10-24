@@ -36,6 +36,7 @@ void ADMUX_Reset() { // Reset when finish the conversion for 3 pins
   ADMUX &= ~(1 << REFS1);
   ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0)); // choose pin A0 as the analog pin
 }
+
 float startConversion() {
   ADCSRA |=  (1<<ADSC);
   while (ADCSRA & (1 <<ADSC)); // Wait for the conversion to complete
