@@ -36,26 +36,12 @@ void ADMUX_Reset() { // Reset when finish the conversion for 3 pins
   ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0)); // choose pin A0 as the analog pin
 }
 float startConversion() {
-  while(counter < numberOfChanel) { // Start conversion for each pin
-    for(int k = 0; k < n; k++) {
-      ADCSRA |=  (1<<ADSC);
-      while (ADCSRA & (1 <<ADSC)) { // Check if the conversion is already in progress, if the progress done, ADSC bit become 0
-        j++;
-      }
-      sum = sum + ADC; // sum up the ADC value
-    }
-    ADMUX += 1; // go incrementally from 1 to 4
-    ADC_Pins[counter] = (float) sum * ADC_2V * (1/n);// store voltage value read from each pin
-    counter++;
-    sum = 0;
-  }
-  ADMUX_Reset();
-  // ADCSRA |=  (1<<ADSC);
-  // while (ADCSRA & (1 <<ADSC)); // Wait for the conversion to complete
-  // result =ADCL;
-  // result |= (ADCH << 8);
-  // sum = (float) result * ADC_2V;
-  // return sum;
+  ADCSRA |=  (1<<ADSC);
+  while (ADCSRA & (1 <<ADSC)); // Wait for the conversion to complete
+  result =ADCL;
+  result |= (ADCH << 8);
+  sum = (float) result * ADC_2V;
+  return sum;
 }
 
 void set_result_wave() {
