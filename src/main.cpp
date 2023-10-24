@@ -81,12 +81,12 @@ int main(void) {
   DDRB |= (1 << 5);
   while(1) {
     startConversion();
-    // set_result_wave();
-    // for(int i = 0; i < 3; i++) {
-    //   Serial.println(final_result[i]);
-    // }
-    // delayMicroseconds(1000);
-    // clear_result_wave();
+    set_result_wave();
+    for(int i = 0; i < 3; i++) {
+      Serial.println(final_result[i]);
+      delay(10);
+    }
+    clear_result_wave();
   }
 }
 

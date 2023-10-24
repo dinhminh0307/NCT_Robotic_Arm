@@ -47,6 +47,7 @@ void startConversion() {
     ADC_Pins[counter] = (float) sum * ADC_2V * (1/n);// store voltage value read from each pin
     counter++;
     sum = 0;
+    ADMUX_Reset();
   }
 }
 
