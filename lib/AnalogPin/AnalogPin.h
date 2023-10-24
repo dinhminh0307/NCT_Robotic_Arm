@@ -29,10 +29,10 @@ And the Arduino has 4 analog pin to handle the servos
 // #include <avr/io.h>
 #include <Arduino.h>
 //------------Define AnalogPin---------------//
-#define Ana1 1
-#define Ana2 2
-#define Ana3 3
-#define Ana4 4
+#define Ana1 0
+#define Ana2 1
+#define Ana3 2
+#define Ana4 3
 
 static float final_result[3] = {0,0,0};
 void REFS0_Config();

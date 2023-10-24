@@ -20,7 +20,7 @@ void REFS0_Config() {
   sei(); // Enable interupt
 }
 void Analog_Init() {
-  DDRC &= ~((1 << Ana1) | (1 << Ana2) | (1 << Ana3) | (1 << Ana4)); // Set as input
+  DDRC &= ~((1 << Ana1) | (1 << Ana2) | (1 << Ana3)); // Set as input
 }
 void ADC_Config() {
   ADCSRA |= ((1 << ADEN) | (1 << ADPS1) | (1 << ADPS0)); // Enable the ADC

@@ -7,11 +7,15 @@ The Robot Arm using 4 Servo for 4 part of the arm
 
 -----------------------------------
 And the Arduino has 4 analog pin to handle the servos
- . Servo1 - ADC1
- . Servo2 - ADC2
- . Servo3 - ADC3
- . Servo4 - ADC4
+ . Servo1 - ADC3
+ . Servo2 - ADC4
+ . Servo3 - ADC5
+ . Servo4 - PORTB5
 
+-----------For the potentiometer reading input: PWM/ADC------------------
+ . ADC3 - ADC0
+ . ADC4 - ADC1
+ . ADC5 - ADC2
  ------------------------From DataSheet -------------------------
  ADC = (Vin / Vref) * 1023
  .Always enable EDAN bit for ADC conversion
@@ -41,37 +45,6 @@ void PCINT_Enable() { // This function to receive input from analog pins
   sei();
 }
 
-//--------------Logical Functions ----------------------//
-// void checkAnalogPin(int flags) {
-//   switch (flags) {
-//     case 0: // Enable ADC0
-//       ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0));
-//       break;
-//     case 1: // Enable ADC1
-//       ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX1));
-//       ADMUX |= (1 << MUX0);
-//       testVar = true;
-//       break;
-//     case 2: // Enable ADC2
-//       ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX0));
-//       ADMUX |= (1 << MUX1);
-//       break;
-//     case 3: // Enable ADC3
-//       ADMUX &= ~((1 << MUX3) | (1 << MUX2));
-//       ADMUX |= ((1 << MUX0) | (1 << MUX1));
-//       break;
-//     case 4: // Enable ADC4
-//       ADMUX &= ~((1 << MUX3) | (1 << MUX1) | (1 << MUX0));
-//       ADMUX |= (1 << MUX2);
-//       break;
-//     case 5: // Enable ADC5
-//       ADMUX &= ~((1 << MUX3) | (1 << MUX1));
-//       ADMUX |= ((1 << MUX2) | (1 << MUX0));
-//       break;
-//     default:
-//       break;
-//   }
-// }
 int main(void) {
   Arm_Config();
   ADC_Config();
@@ -84,18 +57,4 @@ int main(void) {
     // delay(500);
   }
 }
-
-// ISR(PCINT0_vect) { // Interupt when receive signal from analogpin
-//   // for(int i = 0; i <= 5;i++) {
-//   //   if(PINC & (1 << i)) { // For each pin in PINC, check if which pin is enabled and choose them
-//   //     analFlag++;
-//   //     checkAnalogPin(analFlag);
-//   //   }
-//   //   else {
-//   //     continue;
-//   //   }
-//   // }
-//   // analFlag = 0;
-//   PORTB |= (1 << 5);
-// }
 
