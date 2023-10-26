@@ -43,4 +43,5 @@ float startConversion();
 void ADMUX_Reset();
 void set_result_wave();
 void clear_result_wave();
+void ADC_init();
 #endif

@@ -47,9 +47,7 @@ void PCINT_Enable() { // This function to receive input from analog pins
 
 int main(void) {
   Arm_Config();
-  ADC_Config();
-  Analog_Init();
-  REFS0_Config();
+  ADC_init();
   Serial.begin(9600);
   DDRB |= (1 << 5);
   while(1) {
