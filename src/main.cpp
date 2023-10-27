@@ -34,7 +34,7 @@ And the Arduino has 4 analog pin to handle the servos
 #define SERVO4 4
 
 int selectedChannel = A0;
-
+float Vout = 0.0;
 //---------Define Function for the Servo----------//
 void Arm_Config() {
   DDRB |= ((1 << SERVO1) | (1 << SERVO2) | (1 << SERVO3) | (1 << SERVO4));
@@ -46,13 +46,20 @@ void PCINT_Enable() { // This function to receive input from analog pins
   sei();
 }
 
+float convertV2Bit(float V, float Vout) {
+  V += Vout;
+  return (V / 5.) * 255;
+}
+
 int main(void) {
   Arm_Config();
   ADC_init(selectedChannel);
   Serial.begin(9600);
-  DDRB |= (1 << 5);
   while(1) {
-    Serial.println(NCT_StartConversion());
+    float V = 0.0;
+    Vout = NCT_StartConversion();
+    V = convertV2Bit(V, Vout);
+    Serial.println(Vout);
     // delay(500);
   }
 }

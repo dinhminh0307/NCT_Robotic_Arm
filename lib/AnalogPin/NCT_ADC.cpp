@@ -2,6 +2,7 @@
 
 float sum = 0;
 uint16_t result = 0;
+volatile int stored_pin;
 
 //---------Define Functions for the Analog---------//
 void REFS0_Config() {
@@ -21,28 +22,33 @@ void ADC_Disable() {
   ADCSRA &= ~(1 << ADEN); // Disable the ADC
 }
 
-void ADMUX_Reset() { // Reset when finish the conversion for 3 pins
+void ADMUX_Reset(int reset_pin) { // Reset when finish the conversion for 3 pins
   ADMUX |= (1 << REFS0); // Specify Vref
   ADMUX &= ~(1 << REFS1);
-  ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0)); // choose pin A0 as the analog pin
+  resetChannel(reset_pin);
+  stored_pin = 0;
 }
 
 void selectChannel(int channel) {
   switch (channel) {
     case A0:
       ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0)); // choose pin A0 as the analog pin
+      stored_pin = A0;
       break;
     case A1:
       ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX1));
       ADMUX |= (1 << MUX0);
+      stored_pin = A1;
       break;
     case A2:
       ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX0));
       ADMUX |= (1 << MUX1);
+      stored_pin = A2;
       break;
     case A3:
       ADMUX &= ~((1 << MUX3) | (1 << MUX2));
       ADMUX |= ((1 << MUX1) | (1 << MUX0));
+      stored_pin = A3;
       break;
     default:
       break;
@@ -73,8 +79,30 @@ float NCT_StartConversion() {
   result = ADCL;
   result |= (ADCH << 8);
   sum = (float) (5./1023.) * result;
-  ADMUX_Reset(); // Fix ADC function 
-  return result;
+  ADMUX_Reset(stored_pin); // Fix ADC function 
+  return sum;
+}
+
+void resetChannel(int channel) {
+  switch (channel) {
+    case A0:
+      ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0)); // choose pin A0 as the analog pin
+      break;
+    case A1:
+      ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX1));
+      ADMUX |= (1 << MUX0);
+      break;
+    case A2:
+      ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX0));
+      ADMUX |= (1 << MUX1);
+      break;
+    case A3:
+      ADMUX &= ~((1 << MUX3) | (1 << MUX2));
+      ADMUX |= ((1 << MUX1) | (1 << MUX0));
+      break;
+    default:
+      break;
+  }
 }
 
 void ADC_init(int channels) {

@@ -40,9 +40,10 @@ void Analog_Init();
 void ADC_Config();
 void ADC_Disable();
 float NCT_StartConversion();
-void ADMUX_Reset();
+void ADMUX_Reset(int reset_pin);
 void set_result_wave();
 void clear_result_wave();
 void ADC_init(int channel);
 void selectChannel(int channel);
+void resetChannel(int channel);
 #endif
