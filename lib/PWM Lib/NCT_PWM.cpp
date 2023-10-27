@@ -1,4 +1,4 @@
-#include "PWMlibs.h"
+#include "NCT_PWM.h"
 
 void PWM_Write(int pins, int val) {
     DDRB |= (1 << pins);

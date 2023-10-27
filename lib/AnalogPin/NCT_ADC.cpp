@@ -6,7 +6,6 @@ uint16_t result = 0;
 //---------Define Functions for the Analog---------//
 void REFS0_Config() {
   ADMUX &= ~((1 << REFS1) | (1 << REFS0)); // Specify Vref
-  ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0)); // choose pin A0 as the analog pin
   ADMUX &= ~(1 << ADLAR); // left adjust the result
   sei(); // Enable interupt
 }
@@ -26,6 +25,28 @@ void ADMUX_Reset() { // Reset when finish the conversion for 3 pins
   ADMUX |= (1 << REFS0); // Specify Vref
   ADMUX &= ~(1 << REFS1);
   ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0)); // choose pin A0 as the analog pin
+}
+
+void selectChannel(int channel) {
+  switch (channel) {
+    case A0:
+      ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0)); // choose pin A0 as the analog pin
+      break;
+    case A1:
+      ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX1));
+      ADMUX |= (1 << MUX0);
+      break;
+    case A2:
+      ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX0));
+      ADMUX |= (1 << MUX1);
+      break;
+    case A3:
+      ADMUX &= ~((1 << MUX3) | (1 << MUX2));
+      ADMUX |= ((1 << MUX1) | (1 << MUX0));
+      break;
+    default:
+      break;
+  }
 }
 
 float NCT_StartConversion() {
@@ -56,8 +77,9 @@ float NCT_StartConversion() {
   return result;
 }
 
-void ADC_init() {
+void ADC_init(int channels) {
   ADC_Config();
   Analog_Init();
+  selectChannel(channels);
   REFS0_Config();
 }
