@@ -14,7 +14,6 @@ float t = 0;
 
 //---------Define Functions for the Analog---------//
 void REFS0_Config() {
-  cli();
   ADMUX &= ~((1 << REFS1) | (1 << REFS0)); // Specify Vref
   ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0)); // choose pin A0 as the analog pin
   ADMUX &= ~(1 << ADLAR); // left adjust the result
@@ -41,26 +40,29 @@ void ADMUX_Reset() { // Reset when finish the conversion for 3 pins
 float startConversion() {
   ADCSRA |=  (1<<ADSC);
   while (ADCSRA & (1 <<ADSC)); // Wait for the conversion to complete
-  for(int i = 0; i < 10;i++) { // transfer result from ADC to the 16 bit result
-    if( i == 8 || i == 9) {
-      if(ADCH & (1 << i)) {
-        result |= (1 << i);
-      }
-      else {
-        result &= ~(1 << i);
-      }
-    }
-    else {
-      if(ADCL & (1 << i)) {
-        result |= (1 << i);
-      }
-      else {
-        result &= ~(1 << i);
-      }
-    }
-  }
+  // for(int i = 0; i < 10;i++) { // transfer result from ADC to the 16 bit result
+  //   if( i == 8 || i == 9) {
+  //     if(ADCH & (1 << i)) {
+  //       result |= (1 << i);
+  //     }
+  //     else {
+  //       result &= ~(1 << i);
+  //     }
+  //   }
+  //   else {
+  //     if(ADCL & (1 << i)) {
+  //       result |= (1 << i);
+  //     }
+  //     else {
+  //       result &= ~(1 << i);
+  //     }
+  //   }
+  // }
+  result = ADCL;
+  result |= (ADCH << 8);
   sum = (float) (5./1023.) * result;
-  return sum;
+  ADMUX_Reset(); // Fix ADC function 
+  return result;
 }
 
 void ADC_init() {
@@ -68,15 +70,3 @@ void ADC_init() {
   Analog_Init();
   REFS0_Config();
 }
-
-// void set_result_wave() {
-//   for(int i = 0; i < 3; i++) {
-//     final_result[i] = ADC_Pins[i];
-//   }
-// }
-
-// void clear_result_wave() {
-//   for(int i = 0; i < 3; i++) {
-//     final_result[i] = 0;
-//   }
-// }

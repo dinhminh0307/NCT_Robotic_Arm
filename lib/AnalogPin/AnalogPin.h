@@ -34,7 +34,6 @@ And the Arduino has 4 analog pin to handle the servos
 #define Ana3 2
 #define Ana4 3
 
-static float final_result[3] = {0,0,0};
 void REFS0_Config();
 void Analog_Init();
 void ADC_Config();
