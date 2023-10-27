@@ -26,7 +26,7 @@ And the Arduino has 4 analog pin to handle the servos
  -------------------------Note-------------------------------
  . Map function is used to convert ref to another ref. Ex: 1023 -> 5V
 */
-#include <AnaLogPin.h>
+#include <NCT_ADC.h>
 //------------Define Servo pins---------------//
 #define SERVO1 1
 #define SERVO2 2
@@ -51,7 +51,7 @@ int main(void) {
   Serial.begin(9600);
   DDRB |= (1 << 5);
   while(1) {
-    Serial.println(startConversion());
+    Serial.println(NCT_StartConversion());
     // delay(500);
   }
 }

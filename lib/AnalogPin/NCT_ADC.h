@@ -38,7 +38,7 @@ void REFS0_Config();
 void Analog_Init();
 void ADC_Config();
 void ADC_Disable();
-float startConversion();
+float NCT_StartConversion();
 void ADMUX_Reset();
 void set_result_wave();
 void clear_result_wave();

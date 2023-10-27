@@ -1,16 +1,7 @@
-#include "AnalogPin.h"
+#include "NCT_ADC.h"
 
-volatile int j = 0;
-int analFlag = 0;
-bool testVar = false;
-const int numberOfChanel = 3;
-const float ADC_2V = 5 * 1/1023.0;
-int counter = 0;
-volatile float ADC_Pins[3] = {0,0,0}; // store the voltage value from pins
-int n = 50; // samples
 float sum = 0;
 uint16_t result = 0;
-float t = 0;
 
 //---------Define Functions for the Analog---------//
 void REFS0_Config() {
@@ -37,7 +28,7 @@ void ADMUX_Reset() { // Reset when finish the conversion for 3 pins
   ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0)); // choose pin A0 as the analog pin
 }
 
-float startConversion() {
+float NCT_StartConversion() {
   ADCSRA |=  (1<<ADSC);
   while (ADCSRA & (1 <<ADSC)); // Wait for the conversion to complete
   // for(int i = 0; i < 10;i++) { // transfer result from ADC to the 16 bit result
